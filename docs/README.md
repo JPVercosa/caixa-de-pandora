@@ -13,6 +13,7 @@ Esta pasta é a fonte de verdade do projeto. O site só deve começar a ser impl
 - [Publicação e operação](publicacao-e-operacao.md): GitHub Pages, liberações, monitoramento e retirada.
 - [Segurança e privacidade](seguranca-e-privacidade.md): modelo de ameaça, respostas, senha e conteúdo pessoal.
 - [Testes e critérios de aceite](testes-e-aceite.md): validação dos enigmas, aplicação, dispositivos e operação.
+- [Guia local do site](../site/README.md): execução local e variáveis de prévia.
 
 ## Ordem de trabalho
 

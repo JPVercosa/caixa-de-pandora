@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Publicar o site no GitHub Pages, liberar as missões no calendário francês, acompanhar falhas durante os quinze dias e retirar a experiência depois do encerramento.
+Publicar o diretório `site/` no GitHub Pages, liberar as missões no calendário francês, acompanhar falhas durante os quinze dias e retirar a experiência depois do encerramento.
 
 ## Ambientes
 
@@ -16,13 +16,12 @@ O projeto não manterá um ambiente permanente de homologação público com res
 
 ## Fluxo de publicação planejado
 
-1. Executar validações de Markdown, links e consistência documental.
-2. Executar testes dos solucionadores e da interface.
-3. Gerar o artefato estático.
-4. Incluir somente conteúdo permitido para a data de publicação.
-5. Fazer upload do artefato com GitHub Actions.
-6. Publicar com GitHub Pages.
-7. Executar um smoke test da URL pública em celular.
+1. Executar `npm test` e a verificação de sintaxe dos módulos.
+2. Executar validações de Markdown, links e consistência documental.
+3. Gerar o artefato estático copiando `site/`.
+4. Fazer upload do artefato com `.github/workflows/deploy-pages.yml`.
+5. Publicar com GitHub Pages.
+6. Executar um smoke test da URL pública em celular.
 
 O workflow deverá aceitar tanto agendamento quanto execução manual. A execução manual é a recuperação oficial para atraso ou falha de cron.
 

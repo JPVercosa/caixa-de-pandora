@@ -2,7 +2,7 @@
 
 ## Estado do documento
 
-Esta é a arquitetura planejada. Não existe implementação do site no repositório nesta fase.
+Esta arquitetura documenta a primeira implementação funcional. O escopo atual contém a fundação do site e as missões 01, 03 e 05; as demais continuam como placeholders.
 
 ## Restrições
 
@@ -13,7 +13,7 @@ Esta é a arquitetura planejada. Não existe implementação do site no reposit�
 - Sem dependência de autenticação real ou cadastro da jogadora.
 - Conteúdo futuro não deve aparecer de forma casual na interface antes da data.
 
-## Componentes planejados
+## Componentes implementados no primeiro incremento
 
 ### Interface estática
 
@@ -28,7 +28,7 @@ HTML, CSS e JavaScript no navegador serão responsáveis por:
 - bônus emocionais;
 - acessibilidade e adaptação ao celular.
 
-Nenhuma decisão atual exige framework. A implementação deverá preferir JavaScript nativo enquanto isso mantiver os desafios testáveis e legíveis.
+Nenhum framework é usado. A implementação utiliza JavaScript nativo, ES modules e CSS separado. `site/index.html` é apenas o shell; a entrada está em `site/app.js`, e componentes visuais ficam em `site/components/`.
 
 ### Conteúdo por missão
 
@@ -45,7 +45,7 @@ Cada missão será descrita por dados, separada da camada de apresentação. O c
 | `bonus` | Conteúdo liberado somente após a conclusão |
 | `magnet` | Estado visual desbloqueado no painel |
 
-O formato definitivo será escolhido durante a implementação, mas deverá preservar esse limite entre conteúdo e interface.
+O primeiro incremento implementa `site/challenges/mission-01.js`, `mission-03.js` e `mission-05.js`, registrados em `site/challenges/registry.js`. Cada módulo monta seu fluxo e usa o shell compartilhado sem concentrar toda a lógica em HTML.
 
 ### Estado local
 
@@ -96,9 +96,13 @@ Hash no cliente evita respostas legíveis no código, mas não impede força bru
 └── .github/workflows/   # build, testes, liberação e deploy
 ```
 
+## Desenvolvimento local
+
+`tools/dev-server.mjs` serve `site/` sem dependências externas. Variáveis `PANDORA_PREVIEW`, `PANDORA_PREVIEW_DATE`, `PANDORA_SKIP_PASSWORD` e `PANDORA_PORT` são injetadas somente no servidor local. Veja [site/README.md](../site/README.md).
+
 ## Decisões deliberadamente adiadas
 
-- Ferramenta exata de build, se alguma.
+- Ferramenta de build, se alguma, além do deploy direto de `site/`.
 - Formato JSON ou módulos JavaScript para desafios.
 - Estratégia de criptografia dos pacotes futuros no repositório público.
 - Domínio personalizado.
