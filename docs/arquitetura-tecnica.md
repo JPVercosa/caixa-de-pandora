@@ -1,0 +1,106 @@
+# Arquitetura técnica
+
+## Estado do documento
+
+Esta é a arquitetura planejada. Não existe implementação do site no repositório nesta fase.
+
+## Restrições
+
+- Hospedagem no GitHub Pages.
+- Repositório público.
+- Aplicação estática, mobile-first e sem banco de dados.
+- Vida útil operacional de aproximadamente quinze dias.
+- Sem dependência de autenticação real ou cadastro da jogadora.
+- Conteúdo futuro não deve aparecer de forma casual na interface antes da data.
+
+## Componentes planejados
+
+### Interface estática
+
+HTML, CSS e JavaScript no navegador serão responsáveis por:
+
+- modal de entrada com a senha afetiva;
+- calendário e painel de imãs;
+- renderização das etapas de cada missão;
+- contagem de tentativas e exibição de dicas;
+- normalização e hash das respostas;
+- persistência local;
+- bônus emocionais;
+- acessibilidade e adaptação ao celular.
+
+Nenhuma decisão atual exige framework. A implementação deverá preferir JavaScript nativo enquanto isso mantiver os desafios testáveis e legíveis.
+
+### Conteúdo por missão
+
+Cada missão será descrita por dados, separada da camada de apresentação. O contrato mínimo planejado é:
+
+| Campo | Função |
+| --- | --- |
+| `id` | Identificador estável e sem informação secreta |
+| `unlockAt` | Instante de liberação no fuso `Europe/Paris` |
+| `title` | Nome exibido após a liberação |
+| `stages` | Etapas, instruções, recursos e validações intermediárias |
+| `answerHashes` | Hashes das variantes finais normalizadas |
+| `hints` | Duas dicas, associadas a 3 e 7 erros |
+| `bonus` | Conteúdo liberado somente após a conclusão |
+| `magnet` | Estado visual desbloqueado no painel |
+
+O formato definitivo será escolhido durante a implementação, mas deverá preservar esse limite entre conteúdo e interface.
+
+### Estado local
+
+O navegador deverá persistir, por missão:
+
+- concluída ou pendente;
+- etapa atual;
+- número de tentativas inválidas;
+- dicas já abertas;
+- bônus já visualizado.
+
+A senha liberada e a versão do conteúdo também serão armazenadas. Nenhuma resposta digitada será mantida após a validação.
+
+O estado deve conter uma versão. Mudanças incompatíveis poderão migrar ou reiniciar somente a missão afetada, sem apagar conclusões anteriores.
+
+## Liberação por data
+
+- O horário canônico será calculado com `Europe/Paris`, e não com o fuso configurado no aparelho.
+- A interface esconderá missões futuras e informará a próxima data sem revelar título, resposta ou categoria.
+- Como o cliente controla relógio e código, essa barreira é narrativa, não de segurança.
+- Um workflow agendado poderá publicar apenas os arquivos já liberados, reduzindo exposição casual de conteúdo futuro.
+
+## Validação de respostas
+
+1. Receber a resposta apenas no navegador.
+2. Aplicar a normalização definida em cada missão.
+3. Calcular SHA-256 com o salt público daquela missão.
+4. Comparar com a lista de hashes aceitos.
+5. Em sucesso, persistir a conclusão e liberar o bônus.
+6. Em erro, incrementar tentativas sem registrar o texto digitado.
+
+Hash no cliente evita respostas legíveis no código, mas não impede força bruta. Esse limite é aceito pelo modelo de ameaça.
+
+## Estrutura de diretórios planejada
+
+```text
+/
+├── README.md
+├── docs/
+│   ├── desafios/
+│   └── *.md
+├── src/                 # somente na fase de implementação
+│   ├── assets/
+│   ├── challenges/
+│   ├── styles/
+│   └── scripts/
+├── tests/               # validadores e provas de unicidade
+└── .github/workflows/   # build, testes, liberação e deploy
+```
+
+## Decisões deliberadamente adiadas
+
+- Ferramenta exata de build, se alguma.
+- Formato JSON ou módulos JavaScript para desafios.
+- Estratégia de criptografia dos pacotes futuros no repositório público.
+- Domínio personalizado.
+
+Essas decisões só devem ser tomadas quando a primeira missão for transformada em dados executáveis e os custos de complexidade puderem ser avaliados.

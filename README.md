@@ -4,17 +4,16 @@ Uma surpresa de aniversário construída como uma sequência de desafios digitai
 
 ## Estado atual
 
-Este repositório foi iniciado apenas com este README. A primeira fase do projeto será exclusivamente documental, antes de qualquer implementação do site.
+O repositório está na fase de documentação. Nenhum código do site deve ser iniciado antes de as especificações técnicas e os desafios estarem completos e revisados.
 
-## Próxima fase: documentação
+## Documentação
 
-A documentação deverá incluir:
+- [Índice geral](docs/README.md)
+- [Visão geral e calendário](docs/visao-geral.md)
+- [Arquitetura técnica](docs/arquitetura-tecnica.md)
+- [Publicação e operação](docs/publicacao-e-operacao.md)
+- [Segurança e privacidade](docs/seguranca-e-privacidade.md)
+- [Testes e critérios de aceite](docs/testes-e-aceite.md)
+- [Catálogo detalhado de desafios](docs/desafios/README.md)
 
-- visão geral da experiência e da narrativa;
-- arquitetura técnica, publicação e operação temporária do site;
-- segurança compatível com GitHub Pages e GitHub Actions;
-- calendário, progressão, validação, dicas e bônus emocionais;
-- um arquivo Markdown detalhado para cada missão, cobrindo objetivo, mecânica, materiais, fluxo completo, respostas, dicas, critérios de aceite e testes;
-- checklist de implementação, publicação e retirada do site após o encerramento.
-
-Nenhum código do site será iniciado antes de essa documentação estar completa e revisada.
+Cada missão possui sua própria especificação com fluxo, dados, solução, dicas, bônus, acessibilidade e testes. Mudanças de comportamento devem ser registradas na documentação antes de serem implementadas.
