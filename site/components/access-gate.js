@@ -1,4 +1,4 @@
-export function renderAccessGate(root, { onSubmit }) {
+export function renderAccessGate(root, { onSubmit, onSuccess }) {
   root.innerHTML = `
     <section class="gate card" aria-labelledby="gate-title">
       <div class="eyebrow">ARQUIVO RESTRITO · 01</div>
@@ -20,8 +20,16 @@ export function renderAccessGate(root, { onSubmit }) {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     error.hidden = true;
-    const valid = await onSubmit(input.value);
-    if (!valid) {
+    try {
+      const valid = await onSubmit(input.value);
+      if (valid) {
+        onSuccess?.();
+        return;
+      }
+      error.textContent = 'A senha não abriu este arquivo.';
+      error.hidden = false;
+      input.select();
+    } catch {
       error.textContent = 'A senha não abriu este arquivo.';
       error.hidden = false;
       input.select();

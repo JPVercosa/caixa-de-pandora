@@ -68,7 +68,10 @@ function showGate() {
     showHub();
     return;
   }
-  renderAccessGate(root, { onSubmit: (password) => authenticate(password, RUNTIME.accessPasswordHash, storage) });
+  renderAccessGate(root, {
+    onSubmit: (password) => authenticate(password, RUNTIME.accessPasswordHash, storage),
+    onSuccess: showHub
+  });
 }
 
 showGate();
