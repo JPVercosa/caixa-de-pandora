@@ -9,7 +9,7 @@ export function renderHub(root, { missions, isReleased, timezone, store, assetFo
       <header class="topbar">
         <div>
           <div class="eyebrow">INVENTÁRIO DO FUTURO</div>
-          <h1 id="hub-title">Caixa de Pandora</h1>
+          <h1 id="hub-title">Baú de Afetos</h1>
         </div>
         <button class="button ghost" id="logout-button" type="button">Fechar arquivo</button>
       </header>

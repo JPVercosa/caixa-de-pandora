@@ -1,4 +1,4 @@
-# Documentação do Caixa de Pandora
+# Documentação do Baú de Afetos
 
 Esta pasta é a fonte de verdade do projeto. O site só deve começar a ser implementado quando os documentos abaixo estiverem revisados e os desafios tiverem solução única comprovada.
 

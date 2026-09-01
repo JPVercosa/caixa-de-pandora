@@ -1,4 +1,4 @@
-﻿# Caixa de Pandora
+﻿# Baú de Afetos
 
 Uma surpresa de aniversário construída como uma sequência de desafios digitais, experiências futuras e uma descoberta física final.
 

@@ -2,7 +2,7 @@ export function renderAccessGate(root, { onSubmit, onSuccess }) {
   root.innerHTML = `
     <section class="gate card" aria-labelledby="gate-title">
       <div class="eyebrow">ARQUIVO RESTRITO · 01</div>
-      <h1 id="gate-title">Caixa de Pandora</h1>
+      <h1 id="gate-title">Baú de Afetos</h1>
       <p class="lead">Existe uma sequência de entregas esperando o momento certo.</p>
       <form id="access-form" class="stack" novalidate>
         <label for="access-password">Senha de acesso</label>

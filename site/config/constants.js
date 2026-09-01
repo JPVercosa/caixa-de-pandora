@@ -5,7 +5,7 @@
  * imagens dos ímãs quando os assets reais estiverem prontos.
  */
 export const CONSTANTS = Object.freeze({
-  appName: 'Caixa de Pandora',
+  appName: 'Baú de Afetos',
   timezone: 'Europe/Paris',
   accessPasswordHash: 'd404ea81c0e610961ae9ee0419a3e4ed5717f2f5a17729cdda1c724e713c93c7',
   creatorContactUrl: 'https://wa.me/5521992892626?text=Bububu%2C%20travei%20na%20miss%C3%A3o.', // TODO: EDITAR
