@@ -25,7 +25,13 @@ function showHub() {
     timezone: RUNTIME.timezone,
     isReleased: (unlockAt) => isReleased(unlockAt, RUNTIME.now),
     store,
-    assetFor: (id) => RUNTIME.magnetAssets[id] ?? RUNTIME.magnetAssets.default,
+    assetFor: (id, done = false) => {
+      const asset = RUNTIME.magnetAssets[id] ?? RUNTIME.magnetAssets.default;
+      if (typeof asset === 'string') {
+        return asset;
+      }
+      return done ? asset.done ?? asset.default : asset.default;
+    },
     showReset: RUNTIME.preview,
     onOpen: openMission,
     onLogout() {

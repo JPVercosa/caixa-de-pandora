@@ -20,11 +20,11 @@ export function renderHub(root, { missions, isReleased, timezone, store, assetFo
           <p>As missões aparecem no calendário. Algumas ainda estão seladas; as concluídas deixam uma marca na geladeira.</p>
         </div>
         <div class="progress" aria-label="Progresso das missões">
-          <strong>${completed.size}</strong><span>/ ${missions.filter((mission) => mission.implemented).length}</span>
+          <strong>${completed.size}</strong><span>/ ${missions.filter((mission) => 11).length}</span>
         </div>
       </div>
       <div class="fridge" aria-label="Geladeira de missões">
-        <div class="fridge-label">COLEÇÃO DE MOMENTOS</div>
+        <div class="fridge-label">IMÃS DOS DESAFIOS</div>
         <div class="magnet-grid">
           ${missions.map((mission) => {
             const released = isReleased(mission.unlockAt);
@@ -32,7 +32,7 @@ export function renderHub(root, { missions, isReleased, timezone, store, assetFo
             const disabled = !released || !mission.implemented;
             const state = done ? 'concluída' : released && mission.implemented ? 'disponível' : 'selada';
             return `<button class="magnet ${done ? 'done' : ''} ${disabled ? 'locked' : ''}" data-mission="${mission.id}" type="button" ${disabled ? 'disabled' : ''} aria-label="Missão ${String(mission.id).padStart(2, '0')}, ${state}">
-              <img src="${assetFor(mission.id)}" alt="" />
+              <img src="${assetFor(mission.id, done)}" alt="" />
               <span class="magnet-number">${String(mission.id).padStart(2, '0')}</span>
               <span class="magnet-status">${done ? '✓' : released && mission.implemented ? 'abrir' : formatDate(mission.unlockAt, timezone)}</span>
             </button>`;

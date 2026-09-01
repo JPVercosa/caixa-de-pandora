@@ -8,7 +8,7 @@ export const CONSTANTS = Object.freeze({
   appName: 'Caixa de Pandora',
   timezone: 'Europe/Paris',
   accessPasswordHash: 'd404ea81c0e610961ae9ee0419a3e4ed5717f2f5a17729cdda1c724e713c93c7',
-  creatorContactUrl: 'https://wa.me/5500000000000?text=Bububu%2C%20travei%20na%20miss%C3%A3o.', // TODO: EDITAR
+  creatorContactUrl: 'https://wa.me/5521992892626?text=Bububu%2C%20travei%20na%20miss%C3%A3o.', // TODO: EDITAR
   releaseDates: Object.freeze({
     1: '2026-09-01T00:00:00+02:00',
     3: '2026-09-03T00:00:00+02:00',
@@ -24,18 +24,21 @@ export const CONSTANTS = Object.freeze({
   }),
   magnetAssets: Object.freeze({
     default: './assets/magnets/question.svg',
-    1: './assets/magnets/question.svg',
-    3: './assets/magnets/question.svg',
-    5: './assets/magnets/question.svg',
+    1: Object.freeze({
+      default: './assets/magnets/question.svg',
+      done: './assets/magnets/magnet_mission_1.png'
+    }),
+    3: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
+    5: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
     // TODO: EDITAR quando os símbolos reais forem preparados.
-    7: './assets/magnets/question.svg',
-    9: './assets/magnets/question.svg',
-    10: './assets/magnets/question.svg',
-    11: './assets/magnets/question.svg',
-    12: './assets/magnets/question.svg',
-    13: './assets/magnets/question.svg',
-    14: './assets/magnets/question.svg',
-    15: './assets/magnets/question.svg'
+    7: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
+    9: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
+    10: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
+    11: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
+    12: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
+    13: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
+    14: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
+    15: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' })
   }),
   featureFlags: Object.freeze({ showFuturePlaceholders: true })
 });
