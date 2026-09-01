@@ -1,7 +1,9 @@
 import { CONSTANTS } from './constants.js';
 
 const localConfig = globalThis.__PANDORA_LOCAL__ ?? {};
-const query = new URLSearchParams(globalThis.location?.search ?? '');
+const hostname = globalThis.location?.hostname ?? '';
+const isLocalHost = !hostname || ['localhost', '127.0.0.1', '[::1]'].includes(hostname);
+const query = isLocalHost ? new URLSearchParams(globalThis.location?.search ?? '') : new URLSearchParams();
 
 function parseBoolean(value, fallback = false) {
   if (value === undefined || value === null || value === '') return fallback;

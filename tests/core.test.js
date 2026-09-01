@@ -2,9 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { normalizeText, matchesAnswer } from '../site/core/normalize.js';
 import { sha256 } from '../site/core/hash.js';
+import { authenticate } from '../site/core/auth.js';
 import { isReleased } from '../site/core/release.js';
 import { createAttemptController } from '../site/core/attempts.js';
 import { createStateStore } from '../site/core/state.js';
+import { formatDate } from '../site/components/hub.js';
 
 class MemoryStorage {
   #data = new Map();
@@ -26,10 +28,23 @@ test('calcula o hash da senha de acesso', async () => {
   assert.equal(await sha256('bububu'), 'd404ea81c0e610961ae9ee0419a3e4ed5717f2f5a17729cdda1c724e713c93c7');
 });
 
+test('autentica a senha correta e rejeita a incorreta', async () => {
+  const storage = new MemoryStorage();
+  const hash = 'd404ea81c0e610961ae9ee0419a3e4ed5717f2f5a17729cdda1c724e713c93c7';
+  assert.equal(await authenticate('errada', hash, storage), false);
+  assert.equal(storage.getItem('pandora.authenticated'), null);
+  assert.equal(await authenticate('bububu', hash, storage), true);
+  assert.equal(storage.getItem('pandora.authenticated'), 'true');
+});
+
 test('libera missão somente no instante configurado', () => {
   const unlock = '2026-09-03T00:00:00+02:00';
   assert.equal(isReleased(unlock, new Date('2026-09-02T18:59:59-03:00')), false);
   assert.equal(isReleased(unlock, new Date('2026-09-02T19:00:00-03:00')), true);
+});
+
+test('exibe datas no fuso canônico de Paris', () => {
+  assert.equal(formatDate('2026-09-01T00:00:00+02:00', 'Europe/Paris'), '01/09');
 });
 
 test('controla dicas em 3 e 7 erros e contato em 12', () => {

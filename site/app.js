@@ -22,9 +22,11 @@ function openContact() {
 function showHub() {
   renderHub(root, {
     missions: MISSIONS,
+    timezone: RUNTIME.timezone,
     isReleased: (unlockAt) => isReleased(unlockAt, RUNTIME.now),
     store,
     assetFor: (id) => RUNTIME.magnetAssets[id] ?? RUNTIME.magnetAssets.default,
+    showReset: RUNTIME.preview,
     onOpen: openMission,
     onLogout() {
       clearAuthentication(storage);
@@ -60,7 +62,7 @@ function showGate() {
     showHub();
     return;
   }
-  renderAccessGate(root, (password) => authenticate(password, RUNTIME.accessPasswordHash, storage));
+  renderAccessGate(root, { onSubmit: (password) => authenticate(password, RUNTIME.accessPasswordHash, storage) });
 }
 
 showGate();

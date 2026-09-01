@@ -23,7 +23,7 @@ test('missão 03 possui quatro painéis com iniciais VALE', () => {
 
 test('missão 05 possui extração ACAI e quatro bancos fechados', () => {
   assert.equal(MISSION_05_PANELS.length, 4);
-  assert.equal(MISSION_05_PANELS.map((panel) => panel.extracted).join(''), 'ACAÍ');
+  assert.equal(MISSION_05_PANELS.map((panel) => panel.extracted).join(''), 'ACAI');
   assert.equal(MISSION_05_PANELS.every((panel) => panel.candidates.includes(panel.answer)), true);
   assert.deepEqual(MISSION_05_PANELS.map((panel) => panel.index), [6, 1, 3, 3]);
 });

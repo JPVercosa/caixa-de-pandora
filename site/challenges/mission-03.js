@@ -23,6 +23,13 @@ export function mountMission03(host, context) {
     view.content.querySelector('[data-extract]').hidden = true;
     view.content.querySelector('#mission-03-answer').focus();
   });
+  view.content.querySelectorAll('[data-panel]').forEach((select) => {
+    select.addEventListener('change', () => view.saveData({ panels: [...view.content.querySelectorAll('[data-panel]')].map((item) => item.value) }));
+  });
+  (view.saved.stageData?.panels ?? []).forEach((value, index) => {
+    const select = view.content.querySelector(`[data-panel="${index}"]`);
+    if (select) select.value = value;
+  });
   view.content.querySelector('[data-form]').addEventListener('submit', (event) => {
     event.preventDefault();
     if (matchesAnswer(event.currentTarget.answer.value, ['vale'])) view.success('O manifesto encontrou o formato comum das entregas.');

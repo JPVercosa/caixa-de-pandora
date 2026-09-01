@@ -81,9 +81,9 @@ Aplicar o índice em cada solução, na ordem PT → EN → FR → ES:
 - `TIGELA[6] = A`;
 - `CREAM[1] = C`;
 - `FRAISE[3] = A`;
-- `FRÍO[3] = Í`.
+- `FRÍO[3] = I`.
 
-A sequência visual é `A C A Í`; a resposta canônica, com ortografia portuguesa, é `AÇAÍ`. A cedilha não precisa ser deduzida pela grade: a tela final informa que a resposta deve ser escrita em português e aceita a forma sem diacríticos.
+A sequência bruta é `A C A I`; a resposta canônica, com ortografia portuguesa, é `AÇAÍ`. A cedilha e o acento não precisam ser deduzidos pela grade: a tela final informa que a resposta deve ser escrita em português e aceita a forma sem diacríticos.
 
 ### Prova de unicidade
 

@@ -18,9 +18,11 @@ export function createMissionShell({ mission, onBack, onComplete, onContact, sto
   const feedback = root.querySelector('[data-feedback]');
   const hint = root.querySelector('[data-hint]');
   const contact = root.querySelector('[data-contact]');
+  const saved = store.read(mission.id);
   let blocked = false;
   const attempts = createAttemptController({
     hints: mission.hints,
+    initialCount: saved.attempts ?? 0,
     onHint(value) {
       hint.textContent = value;
       hint.hidden = false;
@@ -30,8 +32,25 @@ export function createMissionShell({ mission, onBack, onComplete, onContact, sto
       contact.hidden = false;
       feedback.textContent = 'O arquivo não vai facilitar mais. Se quiser, peça ajuda ao criador.';
       feedback.hidden = false;
+    },
+    onChange(count) {
+      store.write(mission.id, { ...store.read(mission.id), version: 1, attempts: count });
     }
   });
+
+  if (saved.attempts >= 7) {
+    hint.textContent = mission.hints[1];
+    hint.hidden = false;
+  } else if (saved.attempts >= 3) {
+    hint.textContent = mission.hints[0];
+    hint.hidden = false;
+  }
+  if (saved.attempts >= 12) {
+    blocked = true;
+    contact.hidden = false;
+    feedback.textContent = 'O arquivo não vai facilitar mais. Se quiser, peça ajuda ao criador.';
+    feedback.hidden = false;
+  }
 
   root.querySelector('[data-back]').addEventListener('click', onBack);
   contact.addEventListener('click', onContact);
@@ -39,6 +58,7 @@ export function createMissionShell({ mission, onBack, onComplete, onContact, sto
   return {
     root,
     content,
+    saved,
     attempts,
     get blocked() { return blocked; },
     fail(message = 'Ainda não. Reavalie os dados da missão.') {
@@ -49,10 +69,14 @@ export function createMissionShell({ mission, onBack, onComplete, onContact, sto
     },
     success(bonus) {
       blocked = true;
-      store.write(mission.id, { completed: true, bonusSeen: true });
+      store.write(mission.id, { ...store.read(mission.id), version: 1, completed: true, bonusSeen: true });
       feedback.className = 'mission-feedback success';
       feedback.innerHTML = `<p class="success-title">Missão concluída.</p><p>${bonus}</p>`;
+      feedback.hidden = false;
       onComplete(mission.id);
+    },
+    saveData(data) {
+      store.write(mission.id, { ...store.read(mission.id), version: 1, stageData: data });
     }
   };
 }

@@ -1,8 +1,8 @@
-function formatDate(value) {
-  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(new Date(value));
+export function formatDate(value, timezone) {
+  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', timeZone: timezone }).format(new Date(value));
 }
 
-export function renderHub(root, { missions, isReleased, store, assetFor, onOpen, onLogout, onReset }) {
+export function renderHub(root, { missions, isReleased, timezone, store, assetFor, onOpen, onLogout, onReset, showReset = false }) {
   const completed = new Set(missions.filter((mission) => store.read(mission.id).completed).map((mission) => mission.id));
   root.innerHTML = `
     <section class="hub" aria-labelledby="hub-title">
@@ -34,14 +34,14 @@ export function renderHub(root, { missions, isReleased, store, assetFor, onOpen,
             return `<button class="magnet ${done ? 'done' : ''} ${disabled ? 'locked' : ''}" data-mission="${mission.id}" type="button" ${disabled ? 'disabled' : ''} aria-label="Missão ${String(mission.id).padStart(2, '0')}, ${state}">
               <img src="${assetFor(mission.id)}" alt="" />
               <span class="magnet-number">${String(mission.id).padStart(2, '0')}</span>
-              <span class="magnet-status">${done ? '✓' : released && mission.implemented ? 'abrir' : formatDate(mission.unlockAt)}</span>
+              <span class="magnet-status">${done ? '✓' : released && mission.implemented ? 'abrir' : formatDate(mission.unlockAt, timezone)}</span>
             </button>`;
           }).join('')}
         </div>
       </div>
       <div class="hub-footer">
         <p>O arquivo é temporário. O conteúdo das missões futuras permanece fora do painel até a data de liberação.</p>
-        <button class="button text-button" id="reset-button" type="button">Resetar progresso local</button>
+        ${showReset ? '<button class="button text-button" id="reset-button" type="button">Resetar progresso local</button>' : ''}
       </div>
     </section>`;
 
@@ -49,5 +49,5 @@ export function renderHub(root, { missions, isReleased, store, assetFor, onOpen,
     button.addEventListener('click', () => onOpen(Number(button.dataset.mission)));
   });
   root.querySelector('#logout-button').addEventListener('click', onLogout);
-  root.querySelector('#reset-button').addEventListener('click', onReset);
+  root.querySelector('#reset-button')?.addEventListener('click', onReset);
 }
