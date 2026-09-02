@@ -28,9 +28,12 @@ function showHub() {
     assetFor: (id, done = false) => {
       const asset = RUNTIME.magnetAssets[id] ?? RUNTIME.magnetAssets.default;
       if (typeof asset === 'string') {
-        return asset;
+        return { src: asset, fullBackground: false };
       }
-      return done ? asset.done ?? asset.default : asset.default;
+      return {
+        src: done ? asset.done ?? asset.default : asset.default,
+        fullBackground: asset.fullBackground === true
+      };
     },
     showReset: RUNTIME.preview,
     onOpen: openMission,

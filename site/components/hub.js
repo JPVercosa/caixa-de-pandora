@@ -31,8 +31,10 @@ export function renderHub(root, { missions, isReleased, timezone, store, assetFo
             const done = completed.has(mission.id);
             const disabled = !released || !mission.implemented;
             const state = done ? 'concluída' : released && mission.implemented ? 'disponível' : 'selada';
-            return `<button class="magnet ${done ? 'done' : ''} ${disabled ? 'locked' : ''}" data-mission="${mission.id}" type="button" ${disabled ? 'disabled' : ''} aria-label="Missão ${String(mission.id).padStart(2, '0')}, ${state}">
-              <img src="${assetFor(mission.id, done)}" alt="" />
+            const asset = assetFor(mission.id, done);
+            const backgroundStyle = asset.fullBackground ? ` style="background-image: url('${asset.src}')"` : '';
+            return `<button class="magnet ${done ? 'done' : ''} ${asset.fullBackground ? 'magnet--full' : ''} ${disabled ? 'locked' : ''}" data-mission="${mission.id}" type="button" ${disabled ? 'disabled' : ''}${backgroundStyle} aria-label="Missão ${String(mission.id).padStart(2, '0')}, ${state}">
+              ${asset.fullBackground ? '' : `<img src="${asset.src}" alt="" />`}
               <span class="magnet-number">${String(mission.id).padStart(2, '0')}</span>
               <span class="magnet-status">${done ? '✓' : released && mission.implemented ? 'abrir' : formatDate(mission.unlockAt, timezone)}</span>
             </button>`;

@@ -17,7 +17,7 @@ test('missão 01 aceita a classificação canônica', () => {
 
 test('missão 03 possui quatro painéis com iniciais VALE', () => {
   assert.equal(MISSION_03_PANELS.length, 4);
-  assert.equal(MISSION_03_PANELS.map((panel) => panel.letter).join(''), 'VALE');
+  assert.equal(MISSION_03_PANELS.map((panel) => panel.letter).sort().join(''), 'AELV');
   assert.equal(MISSION_03_PANELS.every((panel) => panel.options.includes(panel.answer)), true);
 });
 

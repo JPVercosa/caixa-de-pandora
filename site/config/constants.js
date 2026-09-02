@@ -23,22 +23,31 @@ export const CONSTANTS = Object.freeze({
     15: '2026-09-15T00:00:00+02:00'
   }),
   magnetAssets: Object.freeze({
-    default: './assets/magnets/question.svg',
+    default: Object.freeze({
+      default: './assets/magnets/question.svg',
+      done: './assets/magnets/question.svg',
+      fullBackground: false
+    }),
     1: Object.freeze({
       default: './assets/magnets/question.svg',
-      done: './assets/magnets/magnet_mission_1.png'
+      done: './assets/magnets/magnet_mission_1.png',
+      fullBackground: false
     }),
-    3: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
-    5: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
+    3: Object.freeze({
+      default: './assets/magnets/question.svg',
+      done: './assets/magnets/magnet_mission_3.png',
+      fullBackground: true
+    }),
+    5: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
     // TODO: EDITAR quando os símbolos reais forem preparados.
-    7: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
-    9: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
-    10: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
-    11: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
-    12: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
-    13: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
-    14: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' }),
-    15: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg' })
+    7: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
+    9: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
+    10: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
+    11: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
+    12: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
+    13: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
+    14: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
+    15: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false })
   }),
   featureFlags: Object.freeze({ showFuturePlaceholders: true })
 });

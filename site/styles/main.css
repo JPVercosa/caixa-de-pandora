@@ -263,12 +263,15 @@ input:not([type="checkbox"]):not([type="radio"]):focus, select:focus, button:foc
 
   color: var(--ink);
 
-  background:
+  background-color: #263137;
+  background-image:
     linear-gradient(
       145deg,
       #344148,
       #263137
     );
+  background-repeat: no-repeat;
+  background-position: center;
 
   box-shadow:
     1px 2px 0 #161d20,
@@ -316,6 +319,14 @@ input:not([type="checkbox"]):not([type="radio"]):focus, select:focus, button:foc
   transform: translateX(-50%);
 }
 
+.magnet.magnet--full {
+  background-size: cover;
+}
+
+.magnet.magnet--full::before {
+  opacity: 0;
+}
+
 
 /* ==========================================================
    ÍCONE
@@ -334,6 +345,10 @@ input:not([type="checkbox"]):not([type="radio"]):focus, select:focus, button:foc
   margin-bottom: 2px;
 
   object-fit: contain;
+}
+
+.magnet.magnet--full img {
+  display: none;
 }
 
 .magnet.done img {
@@ -358,6 +373,11 @@ input:not([type="checkbox"]):not([type="radio"]):focus, select:focus, button:foc
   font-weight: 900;
 
   letter-spacing: .07em;
+}
+
+.magnet.magnet--full .magnet-number,
+.magnet.magnet--full .magnet-status {
+  opacity: 0;
 }
 
 .magnet-status {
@@ -470,6 +490,29 @@ input:not([type="checkbox"]):not([type="radio"]):focus, select:focus, button:foc
     1px 2px 0 #10191e,
     3px 6px 8px #00000042,
     0 0 18px #8bd8b025;
+}
+
+.magnet.done.magnet--full {
+  background-color: #263137;
+  background-image: var(--magnet-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.magnet.done:not(.magnet--full)::before {
+  width: 54px;
+  height: 54px;
+}
+
+.magnet.done:not(.magnet--full) img {
+  width: 49px;
+  height: 49px;
+  margin-bottom: 0;
+}
+
+.magnet.done:not(.magnet--full) .magnet-number {
+  display: none;
 }
 
 .magnet.done::before {

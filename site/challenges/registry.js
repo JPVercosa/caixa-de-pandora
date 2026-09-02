@@ -14,7 +14,7 @@ const future = (id, title) => ({
 
 export const MISSIONS = Object.freeze([
   { id: 1, unlockAt: CONSTANTS.releaseDates[1], title: 'Auditoria do inventário', kicker: 'REGISTRO 01', subtitle: 'Classifique o conjunto sem atribuir nomes ao que ainda não foi entregue.', implemented: true, mount: mountMission01, hints: ['Elimine as classes que violam pelo menos uma regra.', 'Compare participação, encerramento após o uso e o que permanece depois.'] },
-  { id: 3, unlockAt: CONSTANTS.releaseDates[3], title: 'Manifesto poliglota', kicker: 'REGISTRO 03', subtitle: 'Quatro definições, quatro idiomas e uma extração final.', implemented: true, mount: mountMission03, hints: ['Escolha a palavra que satisfaz exatamente cada definição.', 'Pegue a primeira letra de cada solução na ordem dos painéis.'] },
+  { id: 3, unlockAt: CONSTANTS.releaseDates[3], title: 'Manifesto poliglota', kicker: 'REGISTRO 03', subtitle: 'Quatro definições, quatro idiomas e quatro letras.', implemented: true, mount: mountMission03, hints: ['Responda corretamente cada definição apresentada.', 'O valor no índice inicial de cada resposta forma a palavra final se combinados na ordem correta.'] },
   { id: 5, unlockAt: CONSTANTS.releaseDates[5], title: 'Quatro línguas, quatro grades', kicker: 'REGISTRO 05', subtitle: 'Resolva os quadros e descubra a palavra que falta ao inventário.', implemented: true, mount: mountMission05, hints: ['Use o padrão verde/amarelo/cinza como no Termo.', 'Os índices aparecem apenas depois das quatro palavras corretas.'] },
   future(7, 'Operação última milha'),
   future(9, 'Três atlas, uma fuga'),
