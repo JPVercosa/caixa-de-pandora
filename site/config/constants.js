@@ -31,14 +31,14 @@ export const CONSTANTS = Object.freeze({
     1: Object.freeze({
       default: './assets/magnets/question.svg',
       done: './assets/magnets/magnet_mission_1.png',
-      fullBackground: false
+      fullBackground: true
     }),
     3: Object.freeze({
       default: './assets/magnets/question.svg',
       done: './assets/magnets/magnet_mission_3.png',
       fullBackground: true
     }),
-    5: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
+    5: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/magnet_mission_5.png', fullBackground: true }),
     // TODO: EDITAR quando os símbolos reais forem preparados.
     7: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
     9: Object.freeze({ default: './assets/magnets/question.svg', done: './assets/magnets/question.svg', fullBackground: false }),
