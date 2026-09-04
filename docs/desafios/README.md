@@ -20,19 +20,39 @@ Cada arquivo desta pasta é a especificação completa e implementável de uma m
 
 ## Contrato obrigatório
 
-Toda especificação deve registrar:
+Cada arquivo é o contrato único da missão. A implementação não deve precisar
+inventar dados, ordem, índices, estados ou regras de validação. Toda
+especificação deve registrar:
 
 1. metadados, dificuldade e duração;
 2. objetivo narrativo e regra de isolamento;
 3. experiência exata da jogadora;
 4. assets e dados de entrada;
-5. mecânica determinística;
-6. solução completa e prova de unicidade;
-7. respostas aceitas e normalização;
-8. feedback, dicas em 3/7 erros e ajuda em 12;
-9. bônus emocional sem dependência posterior;
-10. acessibilidade e comportamento em celular;
-11. critérios de aceite e testes.
+5. dataset literal e contrato de entrada, sem valores implícitos;
+6. mecânica determinística, incluindo pseudocódigo quando houver cálculo;
+7. fluxo fechado de telas, controles, desbloqueios, persistência e reset;
+8. solução completa, prova de unicidade e oráculo de teste reproduzível;
+9. resposta final, índices e normalização com regras de rejeição;
+10. contagem de erros, dicas exatamente em 3/7 e ajuda em 12;
+11. bônus emocional sem dependência posterior;
+12. acessibilidade e comportamento em celular;
+13. critérios de aceite e testes de caminho feliz, erro, recarga e borda.
+
+## Diretiva de consistência antes do código
+
+Antes de implementar uma missão, o implementador deve conseguir responder
+sem consultar outro arquivo:
+
+1. Qual é a ordem canônica de exibição, resolução e extração?
+2. Quais dados exatos são renderizados e qual é a resposta derivada deles?
+3. A validação exige cada etapa intermediária ou somente a resposta final?
+4. Os índices são zero-based ou one-based? Como letras acentuadas são tratadas?
+5. O que acontece com entrada inválida, erro, recarga, reset e limite de ajuda?
+
+Se qualquer resposta exigir uma decisão nova, a especificação deve ser
+atualizada e revisada antes de qualquer código. Termos como “opcional”,
+“sugerido” ou “pode” só podem aparecer para elementos explicitamente
+decorativos e sem efeito na solução.
 
 ## Regra de consistência
 

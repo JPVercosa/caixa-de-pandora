@@ -1,302 +1,86 @@
 # Desafio 13 — Vale-Joia
 
-## Metadados
+## Contrato da missão
+
+Missão isolada em três travas: selecionar material, resolver uma grade lógica e decifrar um criptograma. A resposta final é `JOIA`.
 
 | Campo | Valor |
-| --- | --- |
-| Data | 13/09/2026 |
-| Sequência | 13 |
-| Resposta revelada | JOIA |
+|---|---|
+| Data | 2026-09-13 |
 | Dificuldade | Muito alta |
-| Duração esperada | 25 a 35 minutos |
-| Pré-requisito | Nenhum outro voucher; este desafio é totalmente isolado |
+| Duração | 25–35 min |
+| Resposta | `JOIA` |
 
-## Propósito narrativo e regra de isolamento
+## Fluxo fechado
 
-Este desafio é o voucher de maior valor da coleção. Ele foi desenhado para parecer uma lembrança afetiva, mas na prática é um teste de observação, associação lógica e leitura criptográfica.
+`intro → material → logic-grid → cipher → success`. Cada trava tem um controle de confirmação; a seguinte permanece bloqueada até a anterior estar correta. Persistir `{ stage, errors, material, grid, completed }` durante a sessão; `Reiniciar` limpa. Erros de qualquer trava compartilham `errors` e seguem os limiares 3/7/12.
 
-Regra de isolamento:
+## Dados fixos e trava 1 — material
 
-- este desafio não pode depender da resposta de nenhum outro voucher;
-- nenhuma pista pode citar respostas anteriores ou futuras;
-- nenhum dado externo é necessário para resolver o enigma;
-- a solução completa deve estar contida no conteúdo desta página e no conteúdo mostrado ao jogador dentro do próprio desafio.
+Mostrar todos os dados abaixo e pedir simultaneamente número atômico 79, densidade 19,3 g/cm³ e aparência amarela metálica:
 
-O jogador pode reconhecer referências afetivas, mas não precisa saber nada fora do que o desafio já expõe.
-
-## Fluxo exato do jogador
-
-### 1) Tela inicial
-
-O jogador vê:
-
-- título neutro `O cofre dourado`;
-- uma frase curta de apresentação;
-- botão primário `Iniciar`;
-- botão secundário `Ver regras`;
-- indicador de progresso com 3 travas.
-
-Ao tocar em `Iniciar`, o sistema leva para a primeira trava sem animações longas.
-
-### 2) Primeira trava — tabela de materiais
-
-A tela mostra cinco materiais anônimos e o requisito do cofre:
-
-> Selecione o material de número atômico 79, densidade aproximada de 19,3 g/cm³ e aparência metálica amarela.
-
-| Ficha | Símbolo | Número atômico | Densidade aproximada | Aparência |
+| ID | Símbolo | Número atômico | Densidade | Aparência |
 |---|---|---:|---:|---|
-| M1 | Ag | 47 | 10,5 g/cm³ | branca-prateada |
-| M2 | Au | 79 | 19,3 g/cm³ | amarela metálica |
-| M3 | Pt | 78 | 21,5 g/cm³ | branca-prateada |
-| M4 | Cu | 29 | 8,9 g/cm³ | avermelhada |
-| M5 | Fe | 26 | 7,9 g/cm³ | cinza |
+| M1 | Ag | 47 | 10,5 | branca-prateada |
+| M2 | Au | 79 | 19,3 | amarela metálica |
+| M3 | Pt | 78 | 21,5 | branca-prateada |
+| M4 | Cu | 29 | 8,9 | avermelhada |
+| M5 | Fe | 26 | 7,9 | cinza |
 
-Somente `M2 / Au` satisfaz simultaneamente os três requisitos. O símbolo `AU` torna-se a chave da última trava.
+Somente M2 é válida. Ao confirmar, a chave interna é `AU`; não mostrar o nome “ouro” antes do acerto.
 
-### 3) Segunda trava — grade lógica
+## Trava 2 — grade lógica
 
-A tela mostra uma grade lógica com cinco posições e três categorias associadas a cada posição:
+Entidades fixas: posições 1–5; peças `anel de Veneza`, `anel estrela da Disney`, `colar com foto gravada`, `brincos dourados`, `pulseira de cristais`; origens `Veneza`, `Disney`, `Pandora`, `Swarovski`, `Monte Carlo`; propriedades `aro fino`, `com estrela`, `gravado com foto`, `com cristais`, `fecho de pressão`.
 
-- Peça;
-- Origem;
-- Propriedade;
-- posição de exposição, de 1 a 5.
+Exibir estas pistas, na ordem indicada:
 
-O jogador cruza as informações, fecha a grade e confirma a combinação única.
-
-### 4) Terceira trava — extração criptográfica
-
-Depois da grade lógica, cada peça revela um caractere cifrado. O jogador ordena os quatro caracteres associados às origens `Veneza → Disney → Pandora → Swarovski`, descarta Monte Carlo e obtém `JIIU`. A tela fornece a regra de Vigenère e pede para decifrar com a chave `AU` repetida.
-
-Quando a palavra final é inserida, o desafio termina.
-
-### 5) Conclusão
-
-O jogador vê:
-
-- confirmação da resposta;
-- mensagem de conclusão;
-- desbloqueio do bônus emocional;
-- retorno para o hub de desafios.
-
-## Materiais e dados necessários
-
-### Assets visuais
-
-- cartão de abertura do desafio;
-- ícone de trava;
-- 5 chips de material;
-- 5 cartões de peça;
-- 5 etiquetas de origem;
-- 5 etiquetas de propriedade;
-- matriz final de extração;
-- estado de acerto;
-- estado de erro;
-- estado de bônus desbloqueado.
-
-### Dados fixos do desafio
-
-#### Materiais
-
-Usar integralmente a tabela técnica da primeira trava. Não exibir o nome “ouro” antes de `Au` ser selecionado.
-
-#### Peças
-
-1. Anel de Veneza
-2. Anel estrela da Disney
-3. Colar com foto gravada
-4. Brincos dourados
-5. Pulseira de cristais
-
-#### Origens
-
-1. Veneza
-2. Disney
-3. Pandora
-4. Swarovski
-5. Monte Carlo
-
-#### Propriedades
-
-1. aro fino
-2. com estrela
-3. gravado com foto
-4. com cristais
-5. fecho de pressão
-
-#### Ordem canônica e caractere cifrado
-
-| Posição | Peça | Origem | Propriedade | Caractere |
-|---:|---|---|---|---|
-| 1 | Anel de Veneza | Veneza | aro fino | J |
-| 2 | Colar com foto gravada | Pandora | gravado com foto | I |
-| 3 | Brincos dourados | Monte Carlo | fecho de pressão | X |
-| 4 | Pulseira de cristais | Swarovski | com cristais | U |
-| 5 | Anel estrela da Disney | Disney | com estrela | I |
-
-## Mecânica do enigma
-
-### Trava 1 — seleção do material
-
-O jogador cruza três propriedades técnicas. Somente a linha M2 combina número atômico 79, densidade 19,3 e aparência amarela. A resposta intermediária é `AU`; nenhum conhecimento externo é necessário porque todos os valores estão na tela.
-
-### Trava 2 — grade lógica
-
-Usar as peças, origens, propriedades e posições da ordem canônica. Mostrar estas pistas:
-
-1. O item de Veneza ocupa uma extremidade e aparece antes do item da Disney.
+1. Veneza está em uma extremidade e antes de Disney.
 2. O colar está imediatamente antes dos brincos.
-3. O item de Monte Carlo está imediatamente entre Pandora e Swarovski, nessa ordem da esquerda para a direita.
+3. Monte Carlo está imediatamente entre Pandora e Swarovski, nessa ordem.
 4. A peça com cristais está imediatamente antes da peça com estrela.
-5. A peça com foto ocupa a posição 2 e veio da Pandora.
-6. A pulseira veio da Swarovski.
-7. Os brincos têm fecho de pressão e não vieram da Disney.
-8. O aro fino pertence ao item de Veneza.
-9. O item da Disney é um anel, mas não é o anel de Veneza.
+5. A peça com foto está na posição 2 e veio de Pandora.
+6. A pulseira veio de Swarovski.
+7. Os brincos têm fecho de pressão e não vieram de Disney.
+8. O aro fino pertence a Veneza.
+9. Disney é um anel, mas não o anel de Veneza.
 
-A cadeia força: foto/colar/Pandora na posição 2; brincos/Monte Carlo na 3; pulseira/cristais/Swarovski na 4; anel estrela/Disney na 5; anel veneziano/aro fino/Veneza na 1. Durante a implementação, um enumerador deve confirmar que não existe segunda atribuição válida.
+A interface deve permitir preencher a grade por seleção; confirmar somente quando cada entidade ocupar uma posição única. Um enumerador deve encontrar exatamente uma atribuição:
 
-### Trava 3 — Vigenère
+| Posição | Peça | Origem | Propriedade | Cifra |
+|---:|---|---|---|---|
+| 1 | anel de Veneza | Veneza | aro fino | J |
+| 2 | colar com foto gravada | Pandora | gravado com foto | I |
+| 3 | brincos dourados | Monte Carlo | fecho de pressão | X |
+| 4 | pulseira de cristais | Swarovski | com cristais | U |
+| 5 | anel estrela da Disney | Disney | com estrela | I |
 
-1. Ler o caractere das peças na ordem de origem indicada: Veneza (`J`), Disney (`I`), Pandora (`I`) e Swarovski (`U`). Monte Carlo é explicitamente marcado como decoy depois da grade.
-2. Obter o criptograma `JIIU`.
-3. Repetir a chave da primeira trava: `AUAU`.
-4. Usar alfabeto `A=0, B=1, …, Z=25` e a operação de decifragem `P = (C − K) mod 26`.
-5. Calcular: `J−A=J`, `I−U=O`, `I−A=I`, `U−U=A`.
+## Mecânica, trava 3 e solução — Vigenère
 
-Resultado: `JOIA`.
+Depois da grade, ordenar apenas as origens `Veneza → Disney → Pandora → Swarovski`; Monte Carlo é decoy e não entra. Os caracteres são `J,I,I,U`, portanto o criptograma é `JIIU`. Repetir a chave `AU` como `AUAU`. Usar `A=0...Z=25` e decifrar `P=(C−K) mod 26`: `J−A=J`, `I−U=O`, `I−A=I`, `U−U=A`. Resultado: `JOIA`.
 
-## Caminho de solução determinístico
+A resposta final só é validada após as três travas. Normalizar NFD, remover acentos, pontuação e espaços externos, converter para maiúsculas; aceitar `JOIA`, `JÓIA`, `joia`; rejeitar qualquer outra palavra.
 
-### Resolução passo a passo
+## Ajuda, acessibilidade e critérios de teste
 
-1. Identificar `Au` como a única escolha válida na trava de material.
-2. Cruzar as pistas da grade lógica:
-   - posição 2 fixa colar/foto/Pandora;
-   - a relação “exatamente entre” fixa Monte Carlo na posição 3;
-   - as adjacências fixam Swarovski/cristais na 4 e Disney/estrela na 5;
-   - a extremidade restante fixa Veneza/aro fino na 1.
-3. Reordenar os caracteres por Veneza, Disney, Pandora e Swarovski para obter `JIIU`.
-4. Decifrar `JIIU` com a chave repetida `AUAU`.
-5. Inserir `JOIA`.
+- erro 3: `Escolha a linha que satisfaz os três requisitos ao mesmo tempo.`
+- erro 7: `Fixe a posição 2, use as adjacências e só depois faça a subtração modular.`
+- erro 12: deixar somente `Recorrer ao criador`, sem revelar `JOIA` ou a grade completa.
 
-### Solução completa para a implementação
+Usar controles de teclado e toque `44×44px`, foco visível, textos equivalentes para a grade e nenhuma dependência de cor/arraste. Testar cada trava isoladamente, atribuições duplicadas, grade incompleta, chave/alfabeto, ordem de extração, normalização, recarga/reset, erros 3/7/12 e viewport 360px.
 
-A implementação deve garantir exatamente isto:
+## Bônus
 
-- o valor correto da trava 1 é `Au`;
-- um enumerador deve provar uma única solução para a grade;
-- a extração deve produzir `JIIU` e a decifragem com `AU` deve produzir `JOIA`;
-- o sistema não pode gerar letras diferentes por dispositivo, idioma do navegador ou tamanho da tela.
+Após sucesso, mostrar a galeria fixa de joias e fatos afetivos confirmados. O bloco é decorativo, não altera estado e não é reutilizado.
 
-## Resposta final aceita e normalização
 
-### Variações aceitas
+## Critérios de aceite e testes
 
-- `JOIA`
-- `joia`
-- `Joia`
-- `jóia`
-- `JÓIA`
+- M2/Au é a única seleção material válida.
+- A grade lógica tem exatamente uma atribuição e produz `JIIU` na ordem de origens definida.
+- Vigenère com `AUAU` produz `JOIA`; a resposta final não funciona antes da terceira trava.
+- Testar alternativas erradas, grade incompleta, decoy Monte Carlo, chave/alfabeto, normalização, recarga, reset, dicas 3/7/12, teclado, leitor de tela e viewport 360px.
 
-### Normalização
+## Assets obrigatórios
 
-- remover espaços antes e depois;
-- remover hífens e pontuação;
-- normalizar acentos;
-- converter para maiúsculas.
-
-Exemplo:
-
-- entrada: ` jóia `
-- normalizada: `JOIA`
-
-## Comportamento de tentativas e dicas
-
-### Após 3 erros
-
-Exibir a primeira dica de método:
-
-> “Na primeira trava, procure a linha que satisfaz os três requisitos simultaneamente; não escolha apenas pela aparência.”
-
-### Após 7 erros
-
-Exibir uma dica intermediária mais forte:
-
-> “Na grade, fixe primeiro a posição 2; depois use ‘exatamente entre’ e as duas relações de adjacência. A última trava usa subtração modular.”
-
-### Após 12 erros
-
-Substituir a tentativa por apenas uma ação:
-
-- botão `Recorrer ao criador`
-
-Regras:
-
-- não revelar a resposta;
-- não mostrar a matriz final completa;
-- não sugerir a palavra `JOIA`.
-
-## Bônus emocional desbloqueado
-
-### Galeria de joias
-
-Ao concluir o desafio, liberar uma galeria com as peças organizadas e legendadas.
-
-O conteúdo emocional deve destacar somente fatos confirmados: preferência por dourado/banhado a ouro, anel comprado em Veneza num momento a dois, anel dourado em forma de estrela da Disney, colar com a foto do casal gravada e as joias que ela usa diariamente. Pandora, Swarovski e Monte Carlo podem aparecer como referências gerais, sem atribuir uma peça específica não confirmada.
-
-Importante:
-
-- este bônus é apenas celebratório;
-- ele não é necessário para avançar em nenhum outro desafio;
-- ele não fornece pistas novas para o restante do jogo.
-
-## Notas de implementação
-
-- usar seleção por toque, não arrastar-e-soltar obrigatório;
-- manter a trava 1 em um único clique de confirmação;
-- a grade lógica deve ser legível em telas pequenas;
-- a extração final deve aceitar entrada manual; a palavra só pode ser copiada depois do acerto;
-- os estados de erro e acerto devem persistir ao voltar e avançar de tela.
-
-## Acessibilidade
-
-- todos os controles precisam de foco visível;
-- as peças devem ter rótulos textuais completos;
-- nenhuma pista pode depender apenas de cor;
-- a matriz de extração precisa ter leitura clara em contraste alto;
-- o fluxo deve funcionar só com teclado;
-- os alvos de toque devem ter pelo menos 44 px de altura/largura.
-
-## Casos-limite
-
-- repetir uma escolha errada não pode travar o fluxo;
-- o desafio não pode aceitar `JOIA` antes de a trava 3 ser aberta;
-- acentos e caixa alta/baixa devem ser normalizados;
-- tela estreita não pode esconder a grade lógica;
-- a galeria bônus não pode quebrar a navegação de volta ao hub.
-
-## Critérios de aceite
-
-- a trava 1 aceita apenas `Au`;
-- a grade lógica possui uma única solução;
-- a extração final produz apenas `JOIA`;
-- as dicas aparecem exatamente nas tentativas 3, 7 e 12;
-- depois de 12 erros, a única ação disponível é `Recorrer ao criador`;
-- o bônus emocional aparece apenas após a vitória;
-- o fluxo é utilizável em celular sem depender de hover ou precisão excessiva.
-
-## Cenários de teste
-
-| Cenário | Entrada/ação | Resultado esperado |
-| --- | --- | --- |
-| Seleção correta na trava 1 | tocar em `Au` | trava avança |
-| Seleção incorreta na trava 1 | tocar em `Ag` | erro, sem avanço |
-| Grade lógica única | preencher a combinação canônica | trava 3 é liberada |
-| Extração final correta | inserir `JOIA` | conclusão do desafio |
-| Normalização | inserir `jóia` | aceitação |
-| Dica após 3 erros | 3 respostas erradas | primeira dica aparece |
-| Dica após 7 erros | 7 respostas erradas | dica intermediária aparece |
-| Após 12 erros | 12 respostas erradas | só `Recorrer ao criador` fica disponível |
-| Uso em celular | viewport estreita | layout permanece legível e tocável |
+Usar cartões locais para material, grade lógica, cifra e bônus. Imagens são decorativas; todas as entidades, relações, caracteres e estados devem existir em texto/controles acessíveis.

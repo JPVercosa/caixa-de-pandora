@@ -1,258 +1,118 @@
-# Desafio 07 — Vale Ifood
+# Desafio 07 — Vale iFood
 
-## Metadados
+## Contrato da missão
+
+Especificação autoritativa do voucher 07. A missão é isolada: nenhum texto, resposta ou dado de outro voucher pode ser usado. O objetivo é montar uma rota única de entrega e ler `IFOOD` das paradas.
 
 | Campo | Valor |
 |---|---|
 | Data | 2026-09-07 |
-| Sequência | 07 |
-| Resposta revelada | IFOOD |
 | Dificuldade | Média |
-| Duração esperada | 15 a 20 minutos |
-| Pré-requisito | Desafio anterior da trilha liberado; a rota é independente de respostas passadas |
+| Duração | 15–20 min |
+| Pré-requisito | Hub liberado; não exige resposta anterior |
+| Resposta final | `IFOOD` |
 
-## Propósito narrativo e regra de isolamento
+## Fluxo fechado
 
-Este desafio fecha a faixa de entrega com um problema de roteirização last-mile que parece operacional, não abstrato. O jogador precisa ler janelas de tempo, capacidade, incompatibilidade e um trecho bloqueado para concluir uma ordem única de visitas.
+1. `intro`: exibir título `Operação última milha`, contexto curto e `Iniciar`.
+2. `briefing`: exibir horário de saída, duração do serviço, capacidade, tabela de nós, matriz de deslocamento e regras.
+3. `route`: exibir cinco slots numerados e cinco paradas selecionáveis. A mesma parada não pode ocupar dois slots.
+4. `route-error`: ao confirmar uma rota incompleta ou inválida, manter o rascunho, incrementar `errors` e anunciar um motivo genérico.
+5. `route-success`: ao confirmar a única rota válida, mostrar a ordem aceita e liberar a resposta `IFOOD` como confirmação.
+6. `bonus`: mostrar o bônus somente após o sucesso. `Recorrer ao criador` substitui dicas a partir de 12 erros e nunca revela a rota.
 
-Regra de isolamento: este arquivo não pode depender de qualquer resposta de voucher anterior. Ele deve funcionar sozinho, com todos os dados necessários presentes aqui. A única ligação externa permitida é o desbloqueio de sequência da trilha, nunca a reutilização de uma solução.
+Persistir durante a sessão: `{ route: string[], errors: number, completed: boolean }`. `Reiniciar` limpa tudo e volta a `intro`; recarregar restaura o estado.
 
-## Fluxo exato da experiência
+## Dados fixos
 
-1. **Tela inicial do desafio**
-   - Título neutro: `Operação última milha`.
-   - Subtítulo: `Organize a rota com janela de tempo e capacidade`.
-   - Botão principal: `Montar rota`.
+- Saída do hub: `08:00`.
+- Serviço em cada parada: `4 min`.
+- Capacidade: `9` unidades; demandas somam `9`.
+- Regra de chegada: `arrival = previousDeparture + travel`; `serviceStart = max(arrival, windowStart)`; rejeitar se `serviceStart > windowEnd`.
+- A matriz é dirigida; célula `—` ou `bloqueado` torna o trecho inválido.
 
-2. **Tela de briefing**
-   - Explica que o objetivo é ordenar os nós de entrega.
-   - Mostra a capacidade do veículo e a restrição de incompatibilidade.
-   - Informa que um trecho da malha está bloqueado.
+| ID | Parada | Letra | Demanda | Janela |
+|---|---|---|---:|---|
+| `I` | Instituto Central | I | 1 | 08:00–08:08 |
+| `F` | Feira Norte | F | 2 | 08:12–08:22 |
+| `O1` | Oficina Sul | O | 2 | 08:27–08:37 |
+| `O2` | Ótica Leste | O | 1 | 08:42–08:52 |
+| `D` | Doca Final | D | 3 | 08:57–09:07 |
 
-3. **Tela do mapa/dataset**
-   - O jogador vê a tabela dos nós.
-   - A interface mostra a matriz simplificada de deslocamento.
-   - O sistema deixa claro que a sequência final forma uma palavra.
-
-4. **Montagem da rota**
-   - O jogador seleciona os nós em ordem.
-   - Cada seleção é validada contra janela de tempo, capacidade e restrições.
-   - O motor rejeita rota que viole o bloqueio ou a incompatibilidade.
-
-5. **Tela de conclusão**
-   - Exibe a rota correta.
-   - Mostra a palavra final `IFOOD`.
-   - Libera o bônus emocional e a navegação adiante.
-
-## Ativos e dados necessários
-
-### Ativos visuais
-
-- Mapa minimalista do bairro/cluster de entregas.
-- Tabela responsiva dos nós.
-- Indicadores de janela de tempo.
-- Sinalização de trecho bloqueado.
-- Estado visual de rota válida, inválida e concluída.
-
-### Dados
-
-- Matriz de viagem entre os nós.
-- Janelas de tempo.
-- Demanda de cada entrega.
-- Capacidade total do veículo.
-- Par de incompatibilidade.
-- Texto do sucesso e do bônus.
-
-## Mecânica do puzzle
-
-### Modelo do problema
-
-O desafio usa uma versão fechada de roteirização last-mile. Não é um TSP genérico; é um caso determinístico com cinco nós e um único caminho viável.
-
-Condições globais:
-
-- veículo sai do hub às 08:00;
-- capacidade total: **9 unidades**;
-- total de demanda das cinco entregas: **9 unidades**;
-- serviço em cada parada: **4 minutos**;
-- um arco da malha está bloqueado;
-- há um par de nós incompatíveis quando visitados em sequência inadequada.
-
-### Dataset completo
-
-| Código | Nome da parada | Demanda | Janela de atendimento | Serviço | Observação |
-|---|---|---:|---|---:|---|
-| I | Instituto Central | 1 | 08:00–08:08 | 4 min | primeira parada candidata |
-| F | Feira Norte | 2 | 08:12–08:22 | 4 min | entrega de volume médio |
-| O1 | Oficina Sul | 2 | 08:27–08:37 | 4 min | acesso só pelo corredor alternativo |
-| O2 | Ótica Leste | 1 | 08:42–08:52 | 4 min | item frágil |
-| D | Doca Final | 3 | 08:57–09:07 | 4 min | última entrega do circuito |
-
-### Matriz de deslocamento em minutos
-
-| De / Para | I | F | O1 | O2 | D |
+| De/para | I | F | O1 | O2 | D |
 |---|---:|---:|---:|---:|---:|
-| **Hub** | 2 | 5 | 8 | 12 | 16 |
-| **I** | — | 4 | **bloqueado** | 6 | 10 |
-| **F** | 4 | — | 4 | 6 | 10 |
-| **O1** | 8 | 4 | — | 4 | 7 |
-| **O2** | 12 | 6 | 4 | — | 4 |
-| **D** | 16 | 10 | 7 | 4 | — |
+| Hub | 2 | 5 | 8 | 12 | 16 |
+| I | — | 4 | bloqueado | 6 | 10 |
+| F | 4 | — | 4 | 6 | 10 |
+| O1 | 8 | 4 | — | 4 | 7 |
+| O2 | 12 | 6 | 4 | — | 4 |
+| D | 16 | 10 | 7 | 4 | — |
 
-### Incompatibilidade explícita
+Incompatibilidade adicional: `O1` e `D` não podem ser adjacentes. `O1` e `O2` são entidades distintas apesar de compartilharem a letra `O`.
 
-- `F` e `O2` não podem aparecer como par consecutivo.
-- Motivo narrativo: o processamento de conferência do lote de feira interrompe a fila de leitura do scanner da ótica.
+## Mecânica e validador
 
-## Caminho determinístico de solução
+A confirmação só é processada com exatamente cinco IDs distintos. O validador deve:
 
-A rota correta é:
+1. rejeitar IDs desconhecidos, duplicados ou rota incompleta;
+2. rejeitar qualquer aresta inexistente ou `I → O1`;
+3. rejeitar adjacência `O1/D` em qualquer direção;
+4. iniciar o relógio em `08:00` e demanda em `0`;
+5. para cada nó, calcular chegada, esperar até a abertura da janela, validar o fechamento e somar demanda;
+6. aceitar somente se todos os nós forem visitados e a demanda não exceder `9`;
+7. formar a confirmação concatenando as letras na ordem aceita.
 
-**I → F → O1 → O2 → D**
+Pseudoalgoritmo:
 
-Ela gera a palavra final:
+```text
+for route in candidate:
+  require route == [I,F,O1,O2,D] length-wise (permutation check)
+  require every edge exists and no O1/D adjacency
+  time = 08:00; load = 0
+  for node in route:
+    time += travel(previous, node)
+    start = max(time, windowStart[node])
+    require start <= windowEnd[node]
+    load += demand[node]
+    require load <= 9
+    time = start + 4 minutes
+accept route; code = letters(route)
+```
 
-**IFOOD**
+## Solução e unicidade
 
-### Prova por eliminação
+A rota única é `I → F → O1 → O2 → D`. Chegadas/inícios/saídas: `I 08:02/08:02/08:06`, `F 08:10/08:12/08:16`, `O1 08:20/08:27/08:31`, `O2 08:35/08:42/08:46`, `D 08:50/08:57/09:01`. A enumeração das `5!` permutações deve encontrar exatamente uma rota aceita. O código das letras é `IFOOD`.
 
-1. **I é obrigatória como primeira parada**
-   - Se o jogador começar por `F`, o percurso `Hub → F` leva 5 minutos, e o serviço termina às 08:09.
-   - Isso já faz `I` vencer o limite das 08:08.
-   - Começar por `O1`, `O2` ou `D` também falha por janela.
-   - Logo, `I` é o único início possível.
+## Resposta final
 
-2. **Após I, F é a única segunda parada viável**
-   - `I → O1` está bloqueado.
-   - `I → O2` faz a visita cair tarde demais para preservar a janela de `F`.
-   - `I → D` também destrói a janela de `F` e ainda consome o relógio sem retorno útil.
-   - Portanto, a segunda parada só pode ser `F`.
+Resposta canônica: `IFOOD`. Normalizar Unicode NFD, remover acentos, converter para maiúsculas, remover espaços, hífens e pontuação; aceitar `iFood`, `I FOOD` e `I-FOOD`; rejeitar qualquer letra extra.
 
-3. **Após F, O1 é forçada**
-   - Se `O2` vier antes de `O1`, o atendimento em `O2` empurra o relógio até depois das 08:46.
-   - Nesse cenário, `O1` passa do fim de janela às 08:37.
-   - `D` também não pode vir antes de `O1`, porque `D` precisa ficar por último no circuito viável.
-   - Logo, `O1` é a terceira parada.
+- Erros 1–2: mensagem neutra.
+- Erro 3: `Procure a primeira parada que ainda permite cumprir as janelas seguintes.`
+- Erro 7: `A rota correta respeita as janelas em ordem; não confunda os dois nós O.`
+- Erro 12: esconder dicas e desabilitar novas submissões, deixando apenas `Recorrer ao criador`.
 
-4. **Após O1, O2 é a única opção antes de D**
-   - `D` ainda pode ser atendida depois de `O1`, mas se ela vier antes, `O2` perde a janela.
-   - Como o desafio exige atender todos os nós uma única vez, `O2` precisa acontecer antes de `D`.
-   - Então a quarta parada é `O2` e a quinta é `D`.
+## Erros e dicas
 
-5. **A incompatibilidade também fecha as portas laterais**
-   - A tentativa `F → O2` como vizinhos consecutivos é inválida.
-   - Isso remove a única leitura alternativa que poderia parecer plausível num uso apressado da matriz.
+Nenhuma dica pode revelar a rota completa ou `IFOOD` antes do acerto.
 
-Esse encadeamento deixa uma única ordem possível.
+## Interface, acessibilidade e casos-limite
 
-## Walkthrough completo para o implementador
+Usar tabela semântica, slots com foco visível, seleção por teclado e botões com pelo menos `44×44px`. Não depender somente de cor; anunciar erros, progresso e rota aceita via `aria-live`. Em 360px, empilhar controles; permitir rolagem horizontal apenas na matriz. Rota parcial, duplicada, janela perdida, trecho bloqueado, reset e recarga são testes obrigatórios.
 
-1. Fixe o hub de saída em `08:00`.
-2. Carregue o dataset acima exatamente como está.
-3. Considere o arco `I → O1` como bloqueado e não navegável.
-4. Implemente a validação de rota por etapas:
-   - checar janela antes de aceitar o nó;
-   - somar deslocamento + serviço;
-   - verificar capacidade global;
-   - verificar incompatibilidade de adjacência.
-5. Ao concatenar os códigos dos cinco nós aceitos na ordem final, gere `IFOOD`.
-6. Ao concluir, mostre a sequência e bloqueie novas edições da mesma tentativa.
+## Critérios de aceite e testes
 
-## Resposta final aceita e normalização
+- Enumeração encontra exatamente uma rota: `I,F,O1,O2,D`.
+- `I → O1`, `F → O2 → O1` quando quebra janela, e qualquer rota com `O1/D` adjacente falham sem alterar o rascunho.
+- `IFOOD`, `iFood` e `I-FOOD` passam; palavras semelhantes falham.
+- Dicas aparecem exatamente nos erros 3 e 7; após 12 somente o botão de recurso permanece.
+- Recarregar restaura rota/erros; reiniciar limpa; bônus só aparece após sucesso.
+- Testar teclado, leitor de tela e viewport 360px.
 
-### Variantes aceitas
+## Bônus
 
-- `IFOOD`
-- `iFood`
-- `I FOOD`
-- `I-FOOD`
+Após o sucesso, mostrar apenas o epílogo fixo sobre a cena de uma entrega de comida em Rotterdam. O bônus é narrativo e não participa da validação nem de missões futuras.
 
-### Normalização
+## Assets obrigatórios
 
-- converter para maiúsculas;
-- remover espaços, hífens e pontuação;
-- comparar com `IFOOD`.
-
-Qualquer outra sequência normalizada deve falhar.
-
-## Comportamento das tentativas e dicas
-
-| Erros acumulados | Comportamento |
-|---|---|
-| 1 a 2 | Rejeição discreta da rota e preservação do estado |
-| 3 | Primeira dica de método: `Procure a primeira parada que ainda permite cumprir as janelas seguintes.` |
-| 4 a 6 | Reforço de leitura da malha, sem revelar a ordem |
-| 7 | Dica intermediária forte: `O nó inicial é o único que cabe antes do fechamento de I; depois dele, o trecho bloqueado elimina a segunda escolha óbvia.` |
-| 8 a 11 | Apenas reforço operacional genérico |
-| 12 ou mais | Mostrar somente a ação `Recorrer ao criador` |
-
-Regra obrigatória: nenhuma dica pode revelar a sequência completa ou o código final antes do acerto.
-
-## Bônus emocional desbloqueado
-
-Ao concluir o desafio, o jogador desbloqueia um bônus emocional com três imagens/legendas:
-
-- `Encarnado Burgers`;
-- `Cumbuca Wraps`;
-- a cena de ela arrastando ele para um `Taco Bell` em Rotterdam.
-
-Esse bônus é apenas narrativo e não participa de nenhuma regra futura. Ele não altera a solução, não entra na normalização e não deve ser consultado por outro voucher.
-
-## Notas de implementação, acessibilidade e casos extremos
-
-### Implementação
-
-- Mantenha o dataset estático para garantir reprodutibilidade.
-- Não embaralhe os nós.
-- Exiba os tempos em formato local consistente.
-- Não permita que uma tentativa parcial “conserte” uma janela já violada.
-
-### Acessibilidade
-
-- A tabela deve ser navegável por teclado.
-- Cada nó precisa ter rótulo textual e estado anunciado por leitor de tela.
-- O bloqueio do arco precisa ter descrição clara.
-- Em mobile, a matriz pode rolar horizontalmente sem cortar os cabeçalhos.
-
-### Casos extremos
-
-- Entrada duplicada: rejeitar.
-- Nó repetido: rejeitar.
-- Ordem parcialmente correta, mas com janela quebrada: rejeitar.
-- Tentativa que ignora o arco bloqueado: rejeitar imediatamente.
-- Sequência com códigos corretos, mas espaços/hífens diferentes: aceitar após normalização.
-- Após 12 erros, nunca exibir a palavra final; apenas `Recorrer ao criador`.
-
-## Critérios de aceite
-
-- A tabela completa está presente e contém os cinco nós.
-- O arco `I → O1` está explicitamente bloqueado.
-- A incompatibilidade `F`/`O2` está documentada.
-- A capacidade total e as demandas fecham em 9 unidades.
-- Existe exatamente uma ordem viável.
-- A ordem viável concatena para `IFOOD`.
-- O comportamento de dicas segue os limiares 3, 7 e 12.
-- O desafio permanece usável em telas pequenas.
-
-## Cenários de teste
-
-1. **Fluxo feliz**
-   - Dados `I → F → O1 → O2 → D`, o sistema aceita e conclui.
-
-2. **Bloqueio de arco**
-   - Tentar `I → O1` deve falhar imediatamente.
-
-3. **Janela quebrada**
-   - Tentar começar por `F` ou `O2` deve ser rejeitado por janela.
-
-4. **Incompatibilidade**
-   - Tentar `F → O2` como vizinhos consecutivos deve falhar.
-
-5. **Normalização**
-   - `iFood`, `I-FOOD` e `I FOOD` devem normalizar para a mesma resposta aceita.
-
-6. **Mobile**
-   - Em tela estreita, a tabela e a matriz continuam legíveis e navegáveis.
-
-7. **Isolamento**
-   - Alterações em outro voucher não podem alterar janela, arco bloqueado, resposta ou bônus deste arquivo.
+Usar mapa estático do circuito, tabela semântica da matriz, cinco cartões/botões de parada, cinco slots numerados, estados textualizados de rota válida/inválida e bloco de bônus. Nenhum asset visual é necessário para calcular ou validar a rota.

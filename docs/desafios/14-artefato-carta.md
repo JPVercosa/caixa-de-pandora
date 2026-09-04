@@ -1,257 +1,65 @@
 # Desafio 14 — Artefato-Carta
 
-## Metadados
+## Contrato da missão
+
+Missão isolada em duas travas: converter um código de porta e extrair uma palavra de cinco definições multilíngues. A resposta é `CARTA`.
 
 | Campo | Valor |
-| --- | --- |
-| Data | 14/09/2026 |
-| Sequência | 14 |
-| Resposta revelada | CARTA |
+|---|---|
+| Data | 2026-09-14 |
 | Dificuldade | Alta |
-| Duração esperada | 25 a 35 minutos |
-| Pré-requisito | Nenhum outro voucher; desafio independente e autossuficiente |
+| Duração | 25–35 min |
+| Resposta | `CARTA` |
 
-## Propósito narrativo e regra de isolamento
+## Fluxo e estado
 
-Este é o primeiro momento em que o jogador entende, de forma explícita, que o artefato principal é uma carta. A experiência funciona como uma pequena escape room poliglota, com pistas em português, inglês, francês e espanhol.
+`intro → door-code → extraction → success`. Em `door-code`, o jogador confirma a conversão `35A86 → 35186`; somente então `extraction` é liberada. Em cada uma das cinco faixas, selecionar exatamente uma opção; só depois de todas corretas mostrar os caracteres indexados e liberar a resposta final. Persistir `{ stage, doorConfirmed, selections, errors, completed }`; reset limpa e recarga restaura.
 
-Regra de isolamento:
+## Código e dados fixos
 
-- este desafio não depende da resposta de nenhum outro voucher;
-- nenhuma pista pode citar outro desafio ou resposta anterior;
-- todo o conteúdo necessário para a solução deve aparecer dentro do próprio desafio;
-- o jogador não precisa de conhecimento externo de idioma além de reconhecer palavras comuns e seguir instruções visuais.
+A conversão é literal: substituir a única letra `A` por `1`, preservando os demais caracteres. O código de referência interno passa a ser `35186`; não aceitar `35186` como resposta final.
 
-## Fluxo exato do jogador
+Os índices são **one-based**, na ordem das faixas PT, EN, FR, ES, PT. Para indexar, primeiro converter a resposta para maiúsculas, remover espaços e acentos; a contagem é feita sobre a string resultante.
 
-### 1) Tela inicial
+| # | Definição | Opções | Correta | Forma indexada | Índice | Letra |
+|---:|---|---|---|---|---:|---|
+| 1 PT | Uma lembrança faz isto quando volta à mente. | `RECORDA`, `ESQUECE`, `APAGA`, `CALA` | RECORDA | RECORDA | 3 | C |
+| 2 EN | Beyond what was expected. | `EXTRA`, `LESS`, `PLAIN`, `EARLY` | EXTRA | EXTRA | 5 | A |
+| 3 FR | Action de revenir au point de départ. | `RETOUR`, `DÉPART`, `OUBLI`, `ARRÊT` | RETOUR | RETOUR | 1 | R |
+| 4 ES | Expresión de regresar hacia la persona amada. | `VOLVER A TI`, `IRME DE AQUÍ`, `MIRAR ATRÁS`, `QUEDAR LEJOS` | VOLVER A TI | VOLVERATI | 8 | T |
+| 5 PT | Aquilo que a distância exige quando ainda não é hora. | `ESPERA`, `PRESSA`, `FUGA`, `ESQUECIMENTO` | ESPERA | ESPERA | 6 | A |
 
-O jogador vê:
+A extração é `RECORDA[3] + EXTRA[5] + RETOUR[1] + VOLVERATI[8] + ESPERA[6] = CARTA`.
 
-- título neutro `A porta e as quatro línguas`;
-- subtítulo indicando que existe uma porta e um código;
-- botão `Abrir`;
-- botão `Regras`;
-- indicador de progresso com 2 travas.
+## Regras de validação
 
-### 2) Primeira trava — porta Rue Léopold Bellan
+O código da porta é uma confirmação intermediária, não a resposta. Faixas fora de ordem, opções não listadas e extrações com índice zero-based falham. A resposta final normaliza NFD, remove acentos, pontuação e espaços externos, converte para maiúsculas e aceita somente `CARTA`.
 
-A tela mostra o código da porta:
+## Erros, dicas e interface
 
-`35A86`
+Erros 1–2: mensagem neutra. Erro 3: `Converta o código da porta antes de usar os índices.`. Erro 7: `Resolva as definições; na faixa espanhola, remova os espaços antes de contar a oitava letra.`. Erro 12: esconder tentativa e deixar somente `Recorrer ao criador`; nunca revelar a palavra.
 
-O jogador deve:
+Faixas devem ter rótulo de idioma, opções acessíveis, foco, suporte a teclado/toque `44×44px`, texto alternativo para índice e nenhum significado baseado só em cor. Em telas estreitas, empilhar faixas e manter o campo final visível.
 
-1. converter `A` em `1`;
-2. ler o resultado como `35186`;
-3. usar esses dígitos como índices de extração.
+## Unicidade, critérios de aceite e testes
 
-### 3) Segunda trava — extração poliglota
+Cada faixa tem banco fechado e uma única opção que satisfaz sua definição; o teste deve confirmar uma solução por faixa e a sequência final `CARTA`. Testar conversão `35A86`, tentativa final `35186`, cada opção errada, índice 1/5/8, resposta sem acento, recarga/reset, erros 3/7/12, navegador em qualquer idioma e viewport 360px.
 
-A tela apresenta 5 faixas linguísticas curtas, rotuladas:
+## Bônus
 
-- PT
-- EN
-- FR
-- ES
-- PT
+Depois do sucesso, mostrar a linha do tempo afetiva fixa. É apenas epílogo e não participa da validação.
 
-Cada faixa contém uma definição no próprio idioma e quatro respostas candidatas. Depois de selecionar a única resposta correta, o jogador remove espaços/acentos e aplica o índice correspondente da sequência `3, 5, 1, 8, 6`.
 
-### 4) Conclusão
+## Interface e acessibilidade
 
-Ao montar a palavra `CARTA`, o jogador vê:
+Exibir a conversão do código e o índice selecionado em texto e marcação semântica; não depender de cor. As faixas devem ser navegáveis por teclado, ter foco visível, controles `44×44px`, labels de idioma e layout empilhável em 360px.
 
-- confirmação da resposta;
-- revelação de que o objeto principal é uma carta;
-- desbloqueio do bônus emocional;
-- retorno ao hub.
+## Critérios de aceite e testes
 
-## Materiais e dados necessários
+- `35A86` converte para `35186`, mas somente `CARTA` conclui.
+- Cada uma das cinco faixas tem uma solução; índices one-based produzem `CARTA`.
+- Testar opções erradas, zero-based, recarga, reset, normalização, erros 3/7/12, idiomas do navegador e mobile.
 
-### Assets visuais
+## Assets obrigatórios
 
-- cartão de abertura;
-- ícone de porta;
-- etiqueta `Rue Léopold Bellan`;
-- bloco do código `35A86`;
-- 5 faixas linguísticas;
-- destaque de posição indexada;
-- estado de erro;
-- estado de acerto;
-- estado de bônus desbloqueado.
-
-### Dados fixos do desafio
-
-#### Conversão do código
-
-- `A` → `1`
-- código normalizado: `35186`
-
-#### Índices de extração
-
-- `3`
-- `5`
-- `1`
-- `8`
-- `6`
-
-#### Faixas semânticas canônicas
-
-| Faixa | Definição exibida | Opções | Resposta | Forma indexada | Índice | Letra |
-|---|---|---|---|---|---:|---|
-| PT | “Uma lembrança faz isto quando volta à mente.” | `RECORDA` · `ESQUECE` · `APAGA` · `CALA` | RECORDA | RECORDA | 3 | C |
-| EN | “Beyond what was expected.” | `EXTRA` · `LESS` · `PLAIN` · `EARLY` | EXTRA | EXTRA | 5 | A |
-| FR | “Action de revenir au point de départ.” | `RETOUR` · `DÉPART` · `OUBLI` · `ARRÊT` | RETOUR | RETOUR | 1 | R |
-| ES | “Expresión de regresar hacia la persona amada.” | `VOLVER A TI` · `IRME DE AQUÍ` · `MIRAR ATRÁS` · `QUEDAR LEJOS` | VOLVER A TI | VOLVERATI | 8 | T |
-| PT | “Aquilo que a distância exige quando ainda não é hora.” | `ESPERA` · `PRESSA` · `FUGA` · `ESQUECIMENTO` | ESPERA | ESPERA | 6 | A |
-
-## Mecânica do enigma
-
-### Trava 1 — código da porta
-
-Regra:
-
-- o valor `A` não é letra final; ele deve ser convertido em `1`;
-- o jogador só prossegue depois de normalizar o código;
-- a porta aceita somente o valor normalizado `35186` como referência interna do enigma.
-
-### Trava 2 — extração poliglota
-
-A extração exige primeiro resolver cada definição dentro de seu banco fechado. Depois, remover espaços e diacríticos apenas para contar posições:
-
-1. `RECORDA[3] = C`;
-2. `EXTRA[5] = A`;
-3. `RETOUR[1] = R`;
-4. `VOLVERATI[8] = T`;
-5. `ESPERA[6] = A`.
-
-Palavra final: `CARTA`.
-
-## Caminho de solução determinístico
-
-### Resolução passo a passo
-
-1. Ler o código da porta como `35A86`.
-2. Converter `A` para `1`, obtendo `35186`.
-3. Usar os índices do puzzle na ordem `3, 5, 1, 8, 6`.
-4. Resolver as cinco definições e normalizar as respostas para indexação.
-5. Ler as letras `C`, `A`, `R`, `T`, `A`.
-6. Inserir `CARTA`.
-
-### Solução completa para a implementação
-
-A implementação deve garantir:
-
-- a conversão de `A` para `1` acontece antes de qualquer validação;
-- as definições, opções e regras de normalização são estáticas em todos os dispositivos;
-- o caminho correto sempre produz `CARTA`;
-- nenhuma outra combinação de letras deve ser aceita como solução válida.
-
-## Resposta final aceita e normalização
-
-### Variações aceitas
-
-- `CARTA`
-- `carta`
-- `Carta`
-- `carta.`
-- ` carta `
-
-### Normalização
-
-- remover espaços antes e depois;
-- remover pontuação final;
-- converter para maiúsculas.
-
-## Comportamento de tentativas e dicas
-
-### Após 3 erros
-
-Exibir a primeira dica de método:
-
-> “Converta o código da porta antes de usar os índices.”
-
-### Após 7 erros
-
-Exibir uma dica intermediária mais forte:
-
-> “Resolva as definições antes de contar. Na faixa espanhola, remova os espaços de ‘VOLVER A TI’ e conte a oitava letra.”
-
-### Após 12 erros
-
-Substituir a tentativa por apenas uma ação:
-
-- botão `Recorrer ao criador`
-
-Regras:
-
-- não revelar `CARTA`;
-- não mostrar a tabela completa como resposta;
-- não explicar o conteúdo da carta antes da resolução.
-
-## Bônus emocional desbloqueado
-
-### Linha do tempo afetiva
-
-Ao concluir o desafio, liberar uma linha do tempo com:
-
-- agosto de 2023;
-- a distância entre os dois;
-- a mudança para a França;
-- a relação contínua desde 12/11/2025.
-
-Importante:
-
-- este bônus é puramente emocional;
-- ele não é necessário para resolver o restante do jogo;
-- ele não deve virar pista de outros desafios.
-
-## Notas de implementação
-
-- a leitura deve funcionar em português, inglês, francês e espanhol sem troca de layout;
-- a extração precisa ser totalmente determinística;
-- o campo de entrada deve aceitar a palavra final em teclado virtual e físico;
-- o desafio não deve depender de acentuação de idioma para funcionar;
-- a conversão `A → 1` deve ser explícita na interface.
-
-## Acessibilidade
-
-- todas as faixas precisam de rótulos textuais claros;
-- o código da porta deve ser legível por leitor de tela;
-- o índice selecionado precisa ter feedback visual e semântico;
-- não usar cor como único indicativo de acerto;
-- todo o fluxo deve funcionar sem arrastar;
-- os alvos de toque precisam respeitar 44 px de altura/largura.
-
-## Casos-limite
-
-- usuários que tentem ler o código sem converter `A` devem receber erro;
-- inserir `35186` como resposta final não pode substituir `CARTA`;
-- o puzzle deve funcionar com fontes grandes;
-- o layout não pode quebrar em telas estreitas;
-- a ordem das faixas não pode mudar por idioma do navegador;
-- o bônus não pode aparecer antes da solução correta.
-
-## Critérios de aceite
-
-- o código `35A86` é normalizado para `35186`;
-- os índices `3, 5, 1, 8, 6` produzem exatamente `CARTA`;
-- a resposta final aceita a normalização prevista;
-- as dicas aparecem nas tentativas 3, 7 e 12;
-- depois de 12 erros, só `Recorrer ao criador` fica disponível;
-- o bônus emocional só aparece após a vitória;
-- o desafio continua legível e jogável em celular.
-
-## Cenários de teste
-
-| Cenário | Entrada/ação | Resultado esperado |
-| --- | --- | --- |
-| Conversão do código | ler `35A86` | sistema transforma em `35186` |
-| Extração correta | aplicar `3, 5, 1, 8, 6` | palavra `CARTA` aparece |
-| Resposta normalizada | inserir `carta` | aceitação |
-| Dica após 3 erros | 3 respostas erradas | primeira dica aparece |
-| Dica após 7 erros | 7 respostas erradas | dica intermediária aparece |
-| Após 12 erros | 12 respostas erradas | só `Recorrer ao criador` fica disponível |
-| Uso em celular | viewport estreita | faixas e índices permanecem legíveis |
-| Idioma do navegador | navegador em PT/EN/FR/ES | ordem e solução não mudam |
+Usar cartão local da porta, código textual `35A86`, cinco faixas linguísticas e marcação textual do índice. Nenhuma imagem, fonte ou serviço externo participa da solução.
